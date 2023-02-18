@@ -1,7 +1,8 @@
 import useStore from '../store';
 import { useEffect } from 'react';
+import Link from 'next/link';
 
-
+// object to pass in their respective API call
 const optionsEA = {
 	method: 'GET',
 	headers: {
@@ -9,44 +10,66 @@ const optionsEA = {
 		'X-RapidAPI-Host': 'twinword-emotion-analysis-v1.p.rapidapi.com'
 	}
 };
+//https://twinword-emotion-analysis-v1.p.rapidapi.com/analyze/?text=${quoteObj.quote}
 
 const optionsQ = {
   headers: {
     'X-Api-Key': ''
   }
 };
+// https://api.api-ninjas.com/v1/quotes?category=inspirational&limit=0
 
 export default function Home() {
-
-  const a = useStore(state => state.a);
-  const setA = useStore(state => state.setA);
+  const quote = useStore(state => state.quote);
+  const setQuote = useStore(state => state.setQuote);
+  const isLoading = useStore(state => state.isLoading);
+  const setIsLoading = useStore(state => state.setIsLoading);
+  const incrementRefresh = useStore(state => state.incrementRefresh);
+  const refreshCount = useStore(state => state.refreshCount);
   
-
+/* Below retrieves 10 online quotes tagged as inspirational, then for each, analyzes the emotion, and sets our main
+quote to be the one with the most joy.
+Our state boolean isLoading is set to false in the final promise which is evaluated in our JSX
+This is done since the quote analysis and ranking (processing) can cause the quote being displayed to 
+change in less than a second. This boolean makes sure to display the quote once all processing is completed.
+We also have a Refresh button that changes a state variable that is being watched. Upon being changed, it
+causes the API calls to run again, hence a Refresh
+ */
   useEffect( () => {
-    fetch('https://api.api-ninjas.com/v1/quotes?category=inspirational&limit=8', optionsQ)
+    fetch('http://localhost:3000/api/fakeData/quotesData', optionsQ)
     .then((response) => response.json())
     .then((response) => {
-      setA(response);
-    });
-
-    fetch('https://twinword-emotion-analysis-v1.p.rapidapi.com/analyze/?text=After%20living%20abroad%20for%20such%20a%20long%20time%2C%20seeing%20my%20family%20was%20the%20best%20present%20I%20could%20have%20ever%20wished%20for.', optionsEA)
-    .then(response => response.json())
-    .then(response => console.log(response))
-    .catch(err => console.error(err));
-  }, []);
+      let maxJoy = -1;
+      for (let quoteObj of response){
+        console.log(quoteObj.quote);
+        fetch(`http://localhost:3000/api/fakeData/quoteAnalysis`, optionsEA)
+        .then(response => response.json())
+        .then(quoteAnalysis => {
+          console.log(quoteAnalysis);
+          if (quoteAnalysis.emotion_scores.joy > maxJoy){
+            maxJoy = quoteAnalysis.emotion_scores.joy;
+            setQuote(quoteObj.quote);
+          }
+        })
+      }
+      
+    })
+      .then(() => {
+        setIsLoading(false);
+      })}, [refreshCount]);
 
   
   return (
     <div>
     <h1>Marlon:</h1>
-    
-      {a && a.map( (q) => {
-      return (
-      <div>{q.quote}<br></br></div>
+      {isLoading? (<h1>Loading yeah </h1>) : 
+      (
+      <div>{quote}<br></br></div>
       )
     }
-    )}
-    
+    <button onClick={() => {
+      incrementRefresh();
+      }}>Refresh</button>
     </div> 
   )
 }
