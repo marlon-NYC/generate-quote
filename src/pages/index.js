@@ -1,5 +1,6 @@
 import useStore from '../store';
 import { useEffect } from 'react';
+import Container from 'components/container';
 import Link from 'next/link';
 
 // object to pass in their respective API call
@@ -20,11 +21,8 @@ const optionsQ = {
 // https://api.api-ninjas.com/v1/quotes?category=inspirational&limit=0
 
 export default function Home() {
-  const quote = useStore(state => state.quote);
   const setQuote = useStore(state => state.setQuote);
-  const isLoading = useStore(state => state.isLoading);
   const setIsLoading = useStore(state => state.setIsLoading);
-  const incrementRefresh = useStore(state => state.incrementRefresh);
   const refreshCount = useStore(state => state.refreshCount);
   
 /* Below retrieves 10 online quotes tagged as inspirational, then for each, analyzes the emotion, and sets our main
@@ -33,7 +31,7 @@ Our state boolean isLoading is set to false in the final promise which is evalua
 This is done since the quote analysis and ranking (processing) can cause the quote being displayed to 
 change in less than a second. This boolean makes sure to display the quote once all processing is completed.
 We also have a Refresh button that changes a state variable that is being watched. Upon being changed, it
-causes the API calls to run again, hence a Refresh
+causes the API calls to run again, hence a refresh
  */
   useEffect( () => {
     fetch('http://localhost:3000/api/fakeData/quotesData', optionsQ)
@@ -59,15 +57,10 @@ causes the API calls to run again, hence a Refresh
   
   return (
     <div>
-      <h1>Marlon:</h1>
-        {isLoading? (<h1>Loading yeah </h1>) : 
-        (
-        <div>{quote}<br></br></div>
-        )
-      }
-      <button onClick={() => {
-        incrementRefresh();
-        }}>Refresh</button>
-    </div> 
+      <Container/>
+      <div className='linkContainer'>
+        <Link href="/creator">About Me</Link>
+      </div>
+    </div>
   )
 }
