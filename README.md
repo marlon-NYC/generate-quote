@@ -2,7 +2,7 @@
 
 This is a web application I've built using NextJS/React with HTML & CSS which utilizes a couple of APIs.
 
-**The Premise:**
+### The Premise:
 
 Some days I feel like I’m drained, like I need a boost. So I thought to myself, why not have a site that gives me a new positive and inspiring quote when I need it.
 
@@ -16,5 +16,6 @@ A refresh button is included, that underneath the interface, changes a state var
 
 ![My Image](public/Example1.png)
 
+---
 
 ![My Image](public/Example2.png)
