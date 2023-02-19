@@ -11,14 +11,12 @@ const optionsEA = {
 		'X-RapidAPI-Host': 'twinword-emotion-analysis-v1.p.rapidapi.com'
 	}
 };
-//https://twinword-emotion-analysis-v1.p.rapidapi.com/analyze/?text=${quoteObj.quote}
 
 const optionsQ = {
   headers: {
     'X-Api-Key': process.env.NEXT_PUBLIC_QUERY_API
   }
 };
-// https://api.api-ninjas.com/v1/quotes?category=inspirational&limit=0
 
 export default function Home() {
   const setQuote = useStore(state => state.setQuote);
@@ -34,12 +32,12 @@ We also have a Refresh button that changes a state variable that is being watche
 causes the API calls to run again, hence a refresh
  */
   useEffect( () => {
-    fetch('http://localhost:3000/api/fakeData/quotesData', optionsQ)
+    fetch('https://api.api-ninjas.com/v1/quotes?category=inspirational&limit=10', optionsQ)
     .then((response) => response.json())
     .then((response) => {
       let maxJoy = -1;
       for (let quoteObj of response){
-        fetch(`http://localhost:3000/api/fakeData/quoteAnalysis`, optionsEA)
+        fetch(`https://twinword-emotion-analysis-v1.p.rapidapi.com/analyze/?text=${quoteObj.quote}`, optionsEA)
         .then(response => response.json())
         .then(quoteAnalysis => {
           if (quoteAnalysis.emotion_scores.joy > maxJoy){
