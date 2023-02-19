@@ -6,7 +6,7 @@ import Link from 'next/link';
 const optionsEA = {
 	method: 'GET',
 	headers: {
-		'X-RapidAPI-Key': '',
+		'X-RapidAPI-Key': process.env.NEXT_PUBLIC_EA_API,
 		'X-RapidAPI-Host': 'twinword-emotion-analysis-v1.p.rapidapi.com'
 	}
 };
@@ -14,7 +14,7 @@ const optionsEA = {
 
 const optionsQ = {
   headers: {
-    'X-Api-Key': ''
+    'X-Api-Key': process.env.NEXT_PUBLIC_QUERY_API
   }
 };
 // https://api.api-ninjas.com/v1/quotes?category=inspirational&limit=0
@@ -41,35 +41,33 @@ causes the API calls to run again, hence a Refresh
     .then((response) => {
       let maxJoy = -1;
       for (let quoteObj of response){
-        console.log(quoteObj.quote);
         fetch(`http://localhost:3000/api/fakeData/quoteAnalysis`, optionsEA)
         .then(response => response.json())
         .then(quoteAnalysis => {
-          console.log(quoteAnalysis);
           if (quoteAnalysis.emotion_scores.joy > maxJoy){
             maxJoy = quoteAnalysis.emotion_scores.joy;
             setQuote(quoteObj.quote);
           }
         })
       }
-      
     })
-      .then(() => {
-        setIsLoading(false);
-      })}, [refreshCount]);
+    .then(() => {
+      setIsLoading(false);
+    })
+  }, [refreshCount]);
 
   
   return (
     <div>
-    <h1>Marlon:</h1>
-      {isLoading? (<h1>Loading yeah </h1>) : 
-      (
-      <div>{quote}<br></br></div>
-      )
-    }
-    <button onClick={() => {
-      incrementRefresh();
-      }}>Refresh</button>
+      <h1>Marlon:</h1>
+        {isLoading? (<h1>Loading yeah </h1>) : 
+        (
+        <div>{quote}<br></br></div>
+        )
+      }
+      <button onClick={() => {
+        incrementRefresh();
+        }}>Refresh</button>
     </div> 
   )
 }
