@@ -14,7 +14,7 @@ A refresh button is included, that underneath the interface, changes a state var
 
 ## 
 
-![My Remote Image](https://www.dropbox.com/s/7fcf1eg37hvurf8/Example1.png?dl=0)
+![My Image](public/Example1.png)
 
 
-![My Remote Image](https://www.dropbox.com/s/ak0ilft32fhhcty/Example2.png?dl=0)
+![My Image](public/Example2.png)
