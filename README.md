@@ -19,3 +19,7 @@ A refresh button is included, that underneath the interface, changes a state var
 ---
 
 ![My Image](public/Example2.png)
+
+---
+
+![My Image](public/BioImage.png)
