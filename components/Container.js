@@ -8,7 +8,7 @@ const Container = () => {
     return (
         <div className="container">
         <h1>Inspirational Boost</h1>
-        {isLoading? (<div className="quoteContainer">Loading yeah </div>) : 
+        {isLoading? (<div className="quoteContainer">Loading</div>) : 
         (
         <div className="quoteContainer"> &ldquo;{quote}&rdquo;<br></br></div>
         )
