@@ -10,7 +10,7 @@ const Container = () => {
         <h1>Inspirational Boost</h1>
         {isLoading? (<div className="quoteContainer">Loading yeah </div>) : 
         (
-        <div className="quoteContainer">"{quote}"<br></br></div>
+        <div className="quoteContainer"> &ldquo;{quote}&rdquo;<br></br></div>
         )
         }
             <div id="buttonContainer">
