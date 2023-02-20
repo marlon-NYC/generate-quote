@@ -1,6 +1,6 @@
 import useStore from '../store';
 import { useEffect } from 'react';
-import Container from 'components/container';
+import Container from 'components/Container';
 import Link from 'next/link';
 
 // object to pass in their respective API call
